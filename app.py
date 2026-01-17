@@ -60,6 +60,7 @@ def get_bus_data():
             processed_buses.append({
                 'line': b.get('lineName', '??'),
                 'dest': b.get('destinationName', 'Unknown'),
+                'stop_letter': b.get('stopTag', ''), # TfL API usually sends the Stop Letter as 'stopTag'
                 'arrival_ts': int(arrival_dt.timestamp() * 1000),
                 'leave_ts': int(leave_dt.timestamp() * 1000)
             })
