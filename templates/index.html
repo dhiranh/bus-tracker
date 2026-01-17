@@ -10,7 +10,7 @@
             --bg: #000000; 
             --card: #151515; 
             --gold: #ffcc00; 
-            --text-dim: #777; 
+            --text-dim: #aaa; 
         }
         
         body { 
@@ -18,112 +18,152 @@
             background: var(--bg); 
             color: white; 
             margin: 0; 
-            padding: 8px; 
+            padding: 10px; 
             overflow: hidden; 
             height: 100vh;
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
         }
 
-        /* Weather Bar */
+        /* 50/50 Weather Bar */
         .weather-bar { 
             display: flex; 
+            flex: 1;
             align-items: center; 
-            justify-content: space-between; 
             background: var(--card); 
-            border-radius: 12px; 
-            padding: 0 15px; 
-            margin-bottom: 8px; 
-            border: 1px solid #222;
-            height: 60px;
-            flex-shrink: 0;
+            border-radius: 16px; 
+            margin-bottom: 10px; 
+            border: 2px solid #222;
+            min-height: 0;
+            padding: 0;
         }
-        .temp-display { font-size: 1.8rem; font-weight: 800; }
-        .weather-info { display: flex; align-items: center; }
-        .weather-desc { 
-            font-size: 0.8rem; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            color: var(--text-dim); 
-            margin-right: 8px; 
-        }
-        .weather-icon { width: 48px; height: 48px; }
 
-        /* Bus Card Section */
-        .bus-card { 
-            background: var(--card); 
-            border-radius: 14px; 
-            margin-bottom: 8px; 
-            padding: 10px 15px; 
+        .temp-display { 
+            width: 50%; 
+            font-size: 5.2rem; /* Matches Bus Line size */
+            font-weight: 900; 
+            letter-spacing: -3px; 
+            padding-left: 50px;
+            box-sizing: border-box;
+        }
+
+        .weather-info { 
+            width: 50%; 
             display: flex; 
             align-items: center; 
-            border-left: 10px solid var(--tfl-red);
-            flex-grow: 1;
-            max-height: 100px;
+            justify-content: flex-end; 
+            padding-right: 15px;
+            box-sizing: border-box;
         }
-        .bus-main { flex-grow: 1; overflow: hidden; }
-        .bus-line { font-size: 2.2rem; font-weight: 900; line-height: 1; margin-bottom: 2px; }
+
+        .weather-desc { 
+            font-size: 3.6rem; /* Bigger description */
+            font-weight: 800; 
+            text-transform: uppercase; 
+            color: var(--text-dim); 
+            margin-right: 12px; 
+            text-align: right;
+            line-height: 1.1;
+        }
+        .weather-icon { width: 120px; height: 120px; } /* Maxed out icon */
+
+        /* 50/50 Bus Card Section */
+        .bus-card { 
+            background: var(--card); 
+            border-radius: 16px; 
+            margin-bottom: 10px; 
+            display: flex; 
+            align-items: center; 
+            border-left: 15px solid var(--tfl-red);
+            flex: 1; 
+            min-height: 0; 
+            padding: 0; 
+        }
+        
+        .bus-main { 
+            width: 50%; 
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 15px;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .bus-line { font-size: 4.8rem; font-weight: 900; line-height: 0.8; margin-bottom: 4px; letter-spacing: -2px; }
         .bus-dest { 
-            font-size: 0.85rem; 
+            font-size: 1.1rem; 
             color: var(--text-dim); 
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis; 
-            max-width: 140px; 
-            font-weight: 500;
+            font-weight: 800;
+            text-transform: uppercase;
         }
 
-        /* Timings Section */
-        .timings { text-align: right; }
+        .timings { 
+            width: 50%; 
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: right; 
+            padding-right: 15px;
+            box-sizing: border-box;
+        }
+        
         .arrival-container { 
             display: flex; 
             align-items: baseline; 
             justify-content: flex-end; 
-            line-height: 1;
-            min-height: 3.2rem;
+            line-height: 0.8;
         }
-        .arrival-num { font-weight: 900; color: white; transition: font-size 0.2s ease; }
+        .arrival-num { font-weight: 900; color: white; }
         .min-label { 
-            font-size: 1.2rem; 
-            font-weight: 700; 
+            font-size: 1.5rem; 
+            font-weight: 800; 
             color: var(--text-dim); 
-            margin-left: 6px; 
+            margin-left: 5px; 
         }
         
         .leave-box { 
-            border-top: 1px solid #333; 
-            margin-top: 5px; 
-            padding-top: 3px; 
+            border-top: 2px solid #333; 
+            margin-top: 8px; 
+            padding-top: 5px; 
             display: flex; 
             flex-direction: column; 
             align-items: flex-end; 
         }
         .leave-label { 
-            font-size: 0.55rem; 
+            font-size: 0.9rem; 
             color: var(--gold); 
             text-transform: uppercase; 
-            font-weight: bold; 
-            letter-spacing: 0.5px; 
+            font-weight: 900; 
+            letter-spacing: 1px; 
         }
         .leave-countdown { 
-            font-size: 1.4rem; 
-            font-weight: 800; 
+            font-size: 2.5rem; 
+            font-weight: 900; 
             color: var(--gold); 
-            font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, monospace; 
+            font-family: ui-monospace, 'Cascadia Code', monospace; 
+            line-height: 1;
         }
+
+        .bus-card:last-child { margin-bottom: 0; }
     </style>
 </head>
 <body>
 
     <div class="weather-bar">
-        <div class="temp-display">{{ weather.temp }}°C</div>
+        <div class="temp-display">{{ weather.temp }}°</div>
         <div class="weather-info">
             <span class="weather-desc">{{ weather.desc }}</span>
             <img src="{{ weather.icon }}" class="weather-icon" alt="weather">
         </div>
     </div>
 
-    {% for bus in buses %}
+    {% for bus in buses[:4] %}
     <div class="bus-card">
         <div class="bus-main">
             <div class="bus-line">{{ bus.line }}</div>
@@ -151,29 +191,24 @@
                 const label = card.querySelector('.min-label');
                 const numEl = card.querySelector('.arrival-num');
                 
-                // 1. Arrival Minutes Logic
                 const diffArrival = Math.floor((arrivalTs - now) / 60000);
                 
                 if (diffArrival <= 0) {
                     numEl.innerText = "DUE";
-                    numEl.style.fontSize = "2.4rem"; // Balanced size for "DUE" text
-                    numEl.style.letterSpacing = "1px";
+                    numEl.style.fontSize = "3.5rem"; 
                     label.style.display = "none";
                 } else {
                     numEl.innerText = diffArrival;
-                    numEl.style.fontSize = "3.2rem"; // Larger size for numbers
-                    numEl.style.letterSpacing = "normal";
+                    numEl.style.fontSize = "5rem"; 
                     label.style.display = "inline-block";
-                    label.innerText = "min";
                 }
 
-                // 2. Ticking Leave Countdown Logic
                 const diffLeave = leaveTs - now;
                 const leaveEl = card.querySelector('.leave-countdown');
                 
                 if (diffLeave <= 0) {
                     leaveEl.innerText = "NOW";
-                    leaveEl.style.color = "#ff453a"; // Red alert for "NOW"
+                    leaveEl.style.color = "#ff453a"; 
                 } else {
                     const totalSecs = Math.floor(diffLeave / 1000);
                     const m = Math.floor(totalSecs / 60);
@@ -184,14 +219,9 @@
             });
         }
 
-        // Ticking engine (every 1 second)
         setInterval(updateDisplay, 1000);
         updateDisplay();
-
-        // Data refresh (every 30 seconds)
-        setTimeout(() => {
-            location.reload();
-        }, 30000);
+        setTimeout(() => { location.reload(); }, 30000);
     </script>
 </body>
 </html>
