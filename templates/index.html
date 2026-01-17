@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root { --tfl-red: #dc241f; --bg: #000; --card: #151515; --gold: #ffcc00; --text-dim: #777; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: white; margin: 0; padding: 8px; overflow: hidden; height: 100vh; }
+        
+        .weather-bar { display: flex; align-items: center; justify-content: space-between; background: var(--card); border-radius: 12px; padding: 0 15px; margin-bottom: 8px; border: 1px solid #222; }
+        .temp-display { font-size: 1.8rem; font-weight: 800; }
+        .weather-info { display: flex; align-items: center; }
+        .weather-desc { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); margin-right: 5px; }
+        .weather-icon { width: 45px; height: 45px; }
+
+        .bus-card { background: var(--card); border-radius: 14px; margin-bottom: 8px; padding: 10px 15px; display: flex; align-items: center; border-left: 10px solid var(--tfl-red); }
+        .bus-main { flex-grow: 1; overflow: hidden; }
+        .bus-line { font-size: 2rem; font-weight: 900; line-height: 1; }
+        .bus-dest { font-size: 0.8rem; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
+
+        .timings { text-align: right; }
+        .arrival-container { display: flex; align-items: baseline; justify-content: flex-end; line-height: 1; min-width: 120px; }
+        .arrival-num { font-size: 3.2rem; font-weight: 900; color: white; }
+        .min-label { font-size: 1.2rem; font-weight: 700; color: var(--text-dim); margin-left: 6px; }
+        
+        .leave-box { border-top: 1px solid #333; margin-top: 5px; padding-top: 3px; display: flex; flex-direction: column; align-items: flex-end; }
+        .leave-label { font-size: 0.55rem; color: var(--gold); text-transform: uppercase; font-weight: bold; }
+        .leave-countdown { font-size: 1.4rem; font-weight: 800; color: var(--gold); font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="weather-bar">
+        <div class="temp-display">{{ weather.temp }}°C</div>
+        <div class="weather-info">
+            <span class="weather-desc">{{ weather.desc }}</span>
+            <img src="{{ weather.icon }}" class="weather-icon">
+        </div>
+    </div>
+
+    {% for bus in buses %}
+    <div class="bus-card">
+        <div class="bus-main">
+            <div class="bus-line">{{ bus.line }}</div>
+            <div class="bus-dest">{{ bus.dest }}</div>
+        </div>
+        <div class="timings">
+            <div class="arrival-container">
+                <span class="arrival-num" data-arrival="{{ bus.arrival_ts }}">--</span>
+                <span class="min-label">min</span>
+            </div>
+            <div class="leave-box">
+                <span class="leave-label">Leave In</span>
+                <span class="leave-countdown" data-leave="{{ bus.leave_ts }}">--:--</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <script>
+        function updateDisplay() {
+            const now = Date.now();
+            document.querySelectorAll('.bus-card').forEach(card => {
+                const arrivalTs = parseInt(card.querySelector('.arrival-num').getAttribute('data-arrival'));
+                const leaveTs = parseInt(card.querySelector('.leave-countdown').getAttribute('data-leave'));
+                const label = card.querySelector('.min-label');
+                const numEl = card.querySelector('.arrival-num');
+                
+                const diffArrival = Math.floor((arrivalTs - now) / 60000);
+                if (diffArrival <= 0) {
+                    numEl.innerText = "DUE";
+                    label.style.display = "none";
+                } else {
+                    numEl.innerText = diffArrival;
+                    label.style.display = "inline-block";
+                }
+
+                const diffLeave = leaveTs - now;
+                const leaveEl = card.querySelector('.leave-countdown');
+                if (diffLeave <= 0) {
+                    leaveEl.innerText = "NOW";
+                    leaveEl.style.color = "#ff453a";
+                } else {
+                    const m = Math.floor(diffLeave / 60000);
+                    const s = Math.floor((diffLeave % 60000) / 1000);
+                    leaveEl.innerText = `${m}:${s.toString().padStart(2, '0')}`;
+                    leaveEl.style.color = "var(--gold)";
+                }
+            });
+        }
+        setInterval(updateDisplay, 1000);
+        updateDisplay();
+        setTimeout(() => location.reload(), 30000);
+    </script>
+</body>
+</html>
