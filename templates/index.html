@@ -26,7 +26,7 @@
             box-sizing: border-box;
         }
 
-        /* 50/50 Weather Bar */
+        /* Cleaned 50/50 Weather Bar */
         .weather-bar { 
             display: flex; 
             flex: 1;
@@ -41,10 +41,10 @@
 
         .temp-display { 
             width: 50%; 
-            font-size: 5.2rem; /* Matches Bus Line size */
+            font-size: 5.5rem; /* Slightly larger now that text is gone */
             font-weight: 900; 
             letter-spacing: -3px; 
-            padding-left: 15px;
+            padding-left: 20px;
             box-sizing: border-box;
         }
 
@@ -52,21 +52,12 @@
             width: 50%; 
             display: flex; 
             align-items: center; 
-            justify-content: flex-end; 
-            padding-right: 15px;
+            justify-content: center; /* Centered in the right half */
+            padding-right: 10px;
             box-sizing: border-box;
         }
 
-        .weather-desc { 
-            font-size: 1.5rem; /* Down from 3.6rem to handle long words */
-            font-weight: 800; 
-            text-transform: uppercase; 
-            color: var(--text-dim); 
-            margin-right: 12px; 
-            text-align: right;
-            line-height: 1; /* Keeps it tight */
-        }
-        .weather-icon { width: 120px; height: 120px; } /* Maxed out icon */
+        .weather-icon { width: 130px; height: 130px; } /* Maxed out icon size */
 
         /* 50/50 Bus Card Section */
         .bus-card { 
@@ -158,7 +149,6 @@
     <div class="weather-bar">
         <div class="temp-display">{{ weather.temp }}°</div>
         <div class="weather-info">
-            <span class="weather-desc">{{ weather.desc }}</span>
             <img src="{{ weather.icon }}" class="weather-icon" alt="weather">
         </div>
     </div>
