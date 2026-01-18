@@ -18,56 +18,48 @@ WMO_MAP = {
 }
 
 def get_bus_data():
-    # Define your stops here directly or via env
-    # Stop 1: From your .env
-    # Stop 2: Streatfield Road (490013329Q)
-    stop_ids = [os.getenv('BUS_STOP_ID'), "490019347S"]
-    walk_time = int(os.getenv('WALK_TIME_MINS', 5))
+
+    primary_stop = os.getenv('BUS_STOP_ID')
+    STOP_MAP = {
+        primary_stop: "R",  
+        "490013329Q": "->S"  
+    }
     
+    stop_ids = [primary_stop, "490013329Q"]
+    walk_time = int(os.getenv('WALK_TIME_MINS', 5))
     all_arrivals = []
     
     for stop in stop_ids:
-        if not stop or stop == "None": 
-            continue
-            
-        url = f"https://api.tfl.gov.uk/StopPoint/{stop}/Arrivals"
+        if not stop or stop == "None": continue
         try:
+            url = f"https://api.tfl.gov.uk/StopPoint/{stop}/Arrivals"
             response = requests.get(url, timeout=10)
-            # Check if the response is actually valid JSON
             if response.status_code == 200:
                 data = response.json()
+                for bus in data:
+                    bus['originStopId'] = stop
                 all_arrivals.extend(data)
         except Exception as e:
-            print(f"Error fetching stop {stop}: {e}")
+            print(f"Error: {e}")
 
-    # If both failed, return an empty list instead of crashing
-    if not all_arrivals:
-        return []
-
-    # Sort and take top 4
-    try:
-        sorted_buses = sorted(all_arrivals, key=lambda x: x['expectedArrival'])[:4]
+    sorted_buses = sorted(all_arrivals, key=lambda x: x['expectedArrival'])[:4]
+    
+    processed_buses = []
+    for b in sorted_buses:
+        arrival_dt = datetime.fromisoformat(b['expectedArrival'].replace('Z', '+00:00'))
+        leave_dt = arrival_dt - timedelta(minutes=walk_time)
         
-        processed_buses = []
-        for b in sorted_buses:
-            # Use .get() to avoid KeyError if a field is missing
-            arrival_raw = b.get('expectedArrival')
-            if not arrival_raw: continue
-            
-            arrival_dt = datetime.fromisoformat(arrival_raw.replace('Z', '+00:00'))
-            leave_dt = arrival_dt - timedelta(minutes=walk_time)
-            
-            processed_buses.append({
-                'line': b.get('lineName', '??'),
-                'dest': b.get('destinationName', 'Unknown'),
-                'stop_letter': b.get('stopTag', ''), # TfL API usually sends the Stop Letter as 'stopTag'
-                'arrival_ts': int(arrival_dt.timestamp() * 1000),
-                'leave_ts': int(leave_dt.timestamp() * 1000)
-            })
-        return processed_buses
-    except Exception as e:
-        print(f"Sorting/Processing error: {e}")
-        return []
+        stop_id = b.get('originStopId')
+        letter = STOP_MAP.get(stop_id, "")
+
+        processed_buses.append({
+            'line': b.get('lineName', '??'),
+            'dest': b.get('destinationName', 'Unknown'),
+            'stop_letter': letter,
+            'arrival_ts': int(arrival_dt.timestamp() * 1000),
+            'leave_ts': int(leave_dt.timestamp() * 1000)
+        })
+    return processed_buses
 
 def get_weather():
     lat, lon = os.getenv('LAT'), os.getenv('LON')
