@@ -26,7 +26,7 @@
             box-sizing: border-box;
         }
 
-        /* Symmetrical Weather Bar */
+   
         .weather-bar { 
             display: flex; 
             flex: 1;
@@ -93,16 +93,18 @@
         .stop-badge {
             background: var(--tfl-red);
             color: white;
-            font-size: 0.95rem;
+            font-size: 0.85rem; 
             font-weight: 600;
-            width: 24px;
+            min-width: 24px;   
             height: 24px;
-            border-radius: 50%;
+            padding: 0 6px;   
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             line-height: 1;
+            box-sizing: border-box;
         }
 
         .bus-dest { 
@@ -158,7 +160,7 @@
         .leave-countdown { 
             font-size: 2.5rem; 
             font-weight: 900; 
-            color: var(--text-main); /* Changed to White */
+            color: var(--text-main); 
             font-family: ui-monospace, 'Cascadia Code', monospace; 
             line-height: 1;
         }
@@ -211,9 +213,9 @@
                 const diffArrival = Math.floor((arrivalTs - now) / 60000);
                 
                 if (diffArrival <= 0) {
-                    numEl.innerText = "DUE";
+                    numEl.innerText = "Due";
                     numEl.style.fontSize = "3.5rem"; 
-                    numEl.style.color = "var(--tfl-red)"; /* Highlights when it's due */
+                    numEl.style.color = "var(--tfl-red)"; 
                     label.style.display = "none";
                 } else {
                     numEl.innerText = diffArrival;
