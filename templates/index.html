@@ -26,7 +26,7 @@
             box-sizing: border-box;
         }
 
-   
+        /* Symmetrical Weather Bar */
         .weather-bar { 
             display: flex; 
             flex: 1;
@@ -54,12 +54,13 @@
             display: flex; 
             align-items: center; 
             justify-content: flex-end; 
-            padding-right: 0px;
+            padding-right: 5px;
             box-sizing: border-box;
         }
 
         .weather-icon { width: 130px; height: 130px; } 
 
+        /* Bus Card Section */
         .bus-card { 
             background: var(--card); 
             border-radius: 16px; 
@@ -73,7 +74,7 @@
         }
         
         .bus-main { 
-            width: 50%; 
+            width: 55%; /* Slightly wider to accommodate badge + number */
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -82,31 +83,38 @@
             overflow: hidden;
             box-sizing: border-box;
         }
-        .bus-line { font-size: 4.8rem; font-weight: 900; line-height: 0.8; margin-bottom: 8px; letter-spacing: -2px; }
-        
-        .dest-container {
+
+        /* Container for Badge and Bus Number */
+        .line-header {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            margin-bottom: 8px;
         }
 
         .stop-badge {
             background: var(--tfl-red);
             color: white;
-            font-size: 0.85rem; 
+            font-size: 0.9rem;
             font-weight: 600;
-            min-width: 24px;   
-            height: 24px;
-            padding: 0 6px;   
-            border-radius: 12px;
+            min-width: 35px;
+            height: 26px;
+            padding: 0 6px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            line-height: 1;
             box-sizing: border-box;
         }
 
+        .bus-line { 
+            font-size: 4.8rem; 
+            font-weight: 900; 
+            line-height: 0.8; 
+            letter-spacing: -2px; 
+        }
+        
         .bus-dest { 
             font-size: 1.1rem; 
             color: var(--text-dim); 
@@ -118,7 +126,7 @@
         }
 
         .timings { 
-            width: 50%; 
+            width: 45%; 
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -180,13 +188,13 @@
     {% for bus in buses[:4] %}
     <div class="bus-card">
         <div class="bus-main">
-            <div class="bus-line">{{ bus.line }}</div>
-            <div class="dest-container">
+            <div class="line-header">
                 {% if bus.stop_letter %}
                 <div class="stop-badge">{{ bus.stop_letter }}</div>
                 {% endif %}
-                <div class="bus-dest">{{ bus.dest }}</div>
+                <div class="bus-line">{{ bus.line }}</div>
             </div>
+            <div class="bus-dest">{{ bus.dest }}</div>
         </div>
         <div class="timings">
             <div class="arrival-container">
@@ -213,7 +221,7 @@
                 const diffArrival = Math.floor((arrivalTs - now) / 60000);
                 
                 if (diffArrival <= 0) {
-                    numEl.innerText = "Due";
+                    numEl.innerText = "DUE";
                     numEl.style.fontSize = "3.5rem"; 
                     numEl.style.color = "var(--tfl-red)"; 
                     label.style.display = "none";

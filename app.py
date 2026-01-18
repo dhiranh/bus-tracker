@@ -26,7 +26,7 @@ def get_bus_data():
         streatfield_id: "→S"
     }
     
-    walk_time = int(os.getenv('WALK_TIME_MINS', 5))
+    walk_time = int(os.getenv('WALK_TIME_MINS'))
     all_arrivals = []
 
 
