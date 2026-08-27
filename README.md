@@ -8,14 +8,10 @@ itself in the background every 30 seconds.
 
 ## Configuration
 
-Create a `.env` file in the project root:
+Copy `.env.example` to `.env` and fill in your own values:
 
 ```
-BUS_STOP_ID=490000119W
-STREATFIELD_STOP_ID=490019347S
-WALK_TIME_MINS=5
-LAT=51.5074
-LON=-0.1278
+cp .env.example .env
 ```
 
 | Variable               | Required | Description                                                        |
