@@ -181,7 +181,7 @@
     <div class="weather-bar">
         <div class="temp-display" id="weather-temp">{{ weather.temp }}°C</div>
         <div class="weather-info">
-            <img id="weather-icon" src="{{ weather.icon }}" class="weather-icon" alt="weather">
+            <img id="weather-icon" {% if weather.icon %}src="{{ weather.icon }}"{% endif %} class="weather-icon" alt="{{ weather.desc }}">
         </div>
     </div>
 
@@ -245,7 +245,13 @@
 
         function renderWeather(weather) {
             document.getElementById('weather-temp').textContent = `${weather.temp}°C`;
-            document.getElementById('weather-icon').src = weather.icon;
+            const icon = document.getElementById('weather-icon');
+            icon.alt = weather.desc || 'weather';
+            if (weather.icon) {
+                icon.src = weather.icon;
+            } else {
+                icon.removeAttribute('src');
+            }
         }
 
         async function refreshData() {

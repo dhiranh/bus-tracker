@@ -46,3 +46,5 @@ python app.py
 - `/api/data` returns the current buses/weather as JSON and is what the
   page polls in the background — useful for debugging without reloading
   the whole dashboard.
+- `/health` is a lightweight liveness check (used by the container's
+  Docker healthcheck) that doesn't call any upstream API.
